@@ -15,7 +15,7 @@ In your vagrant environemnt log in to droplet using ssh user@ip -i dropletname
 •	Confirm addition of the new user by typing sudo cat /etc/passwd, the user grader should be listed in the output.
 
 3. Give grader sudo permission
-•	usermod -aG sudo grader (alternate way)
+•sudo s (alternate way)
 •	Reference Documentation: https://www.digitalocean.com/community/tutorials/how-to-add-and-delete-users-on-an-ubuntu-14-04-vps
 
 Make sure you have another terminal logged in as root user
@@ -60,7 +60,8 @@ Disable remote login of root user
 •	sudo apt-get update
 •	Update the packages 
 •	
-•	sudo apt-get upgrade
+•	
+sudo apt-get upgrade
 •	Further updates 
 •	sudo apt-get dist-upgrade
 
@@ -105,11 +106,19 @@ To                         Action      From
 •	Reference Documentation: http://askubuntu.com/questions/138423/how-do-i-change-my-timezone-to-utc-gmt/138442 and https://help.ubuntu.com/community/UbuntuTime
 
 12. Install and configure Apache to serve a Python mod_wsgi application
-•	Install Apache sudo apt-get install apache2  
-•	Confirm successful installation by visiting http://52.24.160.178/ (URL from Udacity Environment information for AWS instance). It should say "It Works" and display other Apache information on the page.   
-•	Install Python mod_wsgi sudo apt-get install libapache2-mod-wsgi   
-•	Install and Configure Demo WSGI app sudo nano /etc/apache2/sites-enabled/000-default.conf  
-•	At the end of the <VirtualHost *:80> block, right before the closing add this line:  WSGIScriptAlias / /var/www/html/myapp.wsgi  
+•	Install Apache sudo apt-get install apache2 
+
+•	Confirm successful installation by visiting http://52.24.160.178/ (URL from Udacity Environment information for AWS instance). It should say "It Works" and display other Apache information on the page. 
+
+
+•	Install Python mod_wsgi sudo apt-get install libapache2-mod-wsgi 
+
+
+•	Install and Configure Demo WSGI app sudo nano /etc/apache2/sites-enabled/000-default.conf 
+
+•	At the end of the <VirtualHost *:80> block, right before the closing add this line: 
+WSGIScriptAlias / /var/www/html/myapp.wsgi 
+
 •	Restart Apache sudo service apache2 restart
 •	NOTE: After restart the Home page will return a 404, weâ€™ll fix that next by configuring Apache to serve WSGI application
 
@@ -183,7 +192,9 @@ cd /var/www
 sudo mkdir catalog 
 cd catalog 
 •	Clone repo for Udacity Project 3 (item-catalog): git clone https://github.com/twhetzel/item-catalog.git catalog The project is now at /var/www/catalog/catalog
-•	Make sure the .git directory is not publicly accessible via a browser  At the root of the web directory, add a .htaccess file and include this line:  RedirectMatch 404 /\.git
+•	Make sure the .git directory is not publicly accessible via a browser 
+At the root of the web directory, add a .htaccess file and include this line: 
+RedirectMatch 404 /\.git
 •	Reference Documentation: http://stackoverflow.com/questions/6142437/make-git-directory-web-inaccessible
 
 NOTE:Make sure you change the 'FlaskApp' to 'catalog' or which ever is the name of your app in the WSGI configuration file
@@ -192,13 +203,21 @@ NOTE:Make sure you change the 'FlaskApp' to 'catalog' or which ever is the name 
 sudo apt-get install python-pip
 sudo pip install virtualenv
 •	Give the following command (where venv is the name you would like to give your temporary environment): sudo virtualenv venv
-•	Now, install Flask in that environment by activating the virtual environment with the following command  source venv/bin/activate
-•	Give this command to install Flask inside  sudo pip install Flask
-•	Run the following command to test if the installation is successful and the app is running  sudo python __init__.py renamed project.py to init.py  It should display â€œRunning on http://localhost:5000/â€� or "Running on http://127.0.0.1:5000/".  If you see this message, you have successfully configured the app.
-•	To deactivate the environment, give the following command  deactivate
+•	Now, install Flask in that environment by activating the virtual environment with the following command 
+source venv/bin/activate
+•	Give this command to install Flask inside 
+sudo pip install Flask
+•	Run the following command to test if the installation is successful and the app is running 
+sudo python __init__.py renamed project.py to init.py 
+It should display â€œRunning on http://localhost:5000/â€� or "Running on http://127.0.0.1:5000/". 
+If you see this message, you have successfully configured the app.
+•	To deactivate the environment, give the following command 
+deactivate
 •	Configure and Enable the new Virtual Host sudo nano /etc/apache2/sites-available/DemoApp.conf
-•	Add file contents for VirtualHost configuration, see Step 4 here:  https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
-•	Enable the virtual host with the following command  
+•	Add file contents for VirtualHost configuration, see Step 4 here: 
+https://www.digitalocean.com/community/tutorials/how-to-deploy-a-flask-application-on-an-ubuntu-vps
+•	Enable the virtual host with the following command 
+
 sudo a2ensite DemoApp
 service apache2 reload
 •	Create the .wsgi file
@@ -214,7 +233,8 @@ cd /var/www/catalog/catalog
 sudo apt-get install python-pip
 sudo pip install virtualenv
 sudo virtualenv venv
-•	Activate the environment  source venv /bin/activate
+•	Activate the environment 
+source venv /bin/activate
 •	Install App dependencies for Flask and Database
 sudo pip install Flask
 sudo pip install sqlalchemy
@@ -242,7 +262,10 @@ sys.path.insert(0,"/var/www/catalog/")
 from catalog import app as application 
 application.secret_key = 'super_secret_key'
 •	Restart Apache sudo service apache2 restart
-•	Modify the database calls in the catalog app to use PostgreSQL vs. SQLite  Edit these files: database_setup.py, project.py, and lotofevents-users.py  Remove: engine = create_engine(â€˜sqlite:///androidevents.dbâ€™, echo=True)  Add: engine = create_engine('postgresql://catalog:catalog_passwd@localhost/catalog')
+•	Modify the database calls in the catalog app to use PostgreSQL vs. SQLite 
+Edit these files: database_setup.py, project.py, and lotofevents-users.py 
+Remove: engine = create_engine(â€˜sqlite:///androidevents.dbâ€™, echo=True) 
+Add: engine = create_engine('postgresql://catalog:catalog_passwd@localhost/catalog')
 •	Use the full path to client_secrets.json and fb_client_secrets.json in the project.py file
 •	Reference Documentation: http://docs.sqlalchemy.org/en/rel_1_0/core/engines.html#postgresql
 
@@ -251,7 +274,9 @@ application.secret_key = 'super_secret_key'
 ◦	Go to: https://console.developers.google.com/home/dashboard?project=udacity-1065
 ◦	Click on Enable and Manage APIs, then click on Credentials in the left-hand menu
 ◦	Select Catalog App
-◦	Add URLs to  Authorized Javascript origins, both local URL and EC2 version, e.g. http://52.24.160.178 and http://ec2-52-24-160-178.us-west-2.compute.amazonaws.com/ Authorized redirect URIs, http://ec2-52-24-160-178.us-west-2.compute.amazonaws.com/login and http://ec2-52-24-160-178.us-west-2.compute.amazonaws.com/gconnect
+◦	Add URLs to 
+Authorized Javascript origins, both local URL and EC2 version, e.g. http://52.24.160.178 and http://ec2-52-24-160-178.us-west-2.compute.amazonaws.com/
+Authorized redirect URIs, http://ec2-52-24-160-178.us-west-2.compute.amazonaws.com/login and http://ec2-52-24-160-178.us-west-2.compute.amazonaws.com/gconnect
 ◦	NOTE: Needed to restart Apache and Python app to get it all working
 ◦	Downgrad packages to enable Google+ Login
 •	pip install werkzeug==0.8.3 
